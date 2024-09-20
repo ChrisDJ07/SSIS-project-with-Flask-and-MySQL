@@ -1,0 +1,133 @@
+:root {
+    --background: #EAE4DD;
+    --background-hover: #E1D7C6;
+    --button: #295F98;
+    --button-hover: hwb(211 16% 20%);
+}
+
+
+/* Table Header */
+.table-headers {
+    background-color: white;
+    padding: 10px 0;
+    padding-right: 150px;
+    margin: 0 30px 0 30px;
+    border-bottom: 1px solid #bfc1c2;
+    display: flex;
+    justify-content: space-between;
+}
+
+.table-header {
+    display: inline-block;
+    /* border: 1px solid black; */
+}
+
+.check {
+    width: 4%;
+    text-align: center;
+}
+
+#select-all {
+    cursor: pointer;
+}
+
+.student-id {
+    width: 10%;
+    margin-left: -20px;
+}
+
+.name {
+    width: 30%;
+}
+
+.course {
+    width: 15%;
+}
+
+.year {
+    width: 15%;
+}
+
+.gender {
+    width: 15%;
+}
+
+.sort-button {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    font-size: 1rem;
+    color: hwb(38 78% 62%);
+    cursor: pointer;
+}
+
+.hidden>i {
+    display: none;
+}
+
+
+/* Table Data */
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    display: flex;
+    cursor: pointer;
+}
+
+.table-row {
+    width: 82.5%;
+    background-color: white;
+    padding: 10px 0;
+    margin: 0 0px 0 30px;
+    border-bottom: 1px solid #bfc1c2;
+    display: flex;
+    justify-content: space-between;
+}
+
+.table-data {
+    display: inline-block;
+    font-size: 0.9rem;
+    /* border: 1px solid black; */
+}
+
+.tableBtn-container {
+    width: 12.45%;
+    border-bottom: 1px solid #bfc1c2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-data {
+    font-size: 1.5em;
+    padding: 3px 15px;
+    border-radius: 5px;
+    border-color: transparent;
+    background-color: transparent;
+    color: red;
+}
+
+.delete-data:hover {
+    background-color: #f9d2d6;
+    cursor: pointer;
+}
+
+.edit-data {
+    font-size: 1rem;
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--button-hover);
+    color: white;
+    margin-right: 9px;
+}
+
+.edit-data:hover {
+    border: 2px solid var(--button);
+    background-color: transparent;
+    color: var(--button);
+    cursor: pointer;
+}

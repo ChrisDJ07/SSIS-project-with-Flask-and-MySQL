@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main-header.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/content.css') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+  </head>
+  <body>
+    <!--SIDEBAR-->
+    <div class="sidebar">
+      <div class="side-header">
+        <button class="collapse-btn">
+          <i class="fa fa-bars" onclick="toggle_sidebar()"></i>
+        </button>
+        <p class="banner">SSIS</p>
+      </div>
+      <div class="navigation">
+        <ul class="navlinks">
+          <li>
+            <a href="/">
+              <div class="tab-icon">
+                <i class="fa fa-users tab-icon" aria-hidden="true"></i>
+              </div>
+              <span class="canCollapse">Students</span>
+            </a>
+          </li>
+          <li>
+            <a href="courses">
+              <div class="tab-icon">
+                <i class="fa fa-book tab-icon" aria-hidden="true"></i>
+              </div>
+              <span class="canCollapse">Courses</span>
+            </a>
+          </li>
+          <li>
+            <a href="colleges">
+              <div class="tab-icon">
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+              </div>
+              <span class="canCollapse">Colleges</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--SIDEBAR-->
+
+    <!--CONTENT-->
+    <div class="main-container">
+        <div class="main-header">
+            <button class="main-button" id="add-account" onclick="open_Details('accountAdd-overlay')">
+              <i class="fa fa-plus-circle add-icon" aria-hidden="true"></i> Create New </button>
+            <form class="search-form" method ="POST">
+                <input type="text" class="search-field" id="search" name="search" placeholder="Search..."/>
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+        </div>
+
+        {% block content %}{% endblock %}
+
+    </div>
+    <!--CONTENT-->
+    
+    <script src="{{ url_for('static', filename='js/website.js') }}"></script>
+  </body>
+</html>
