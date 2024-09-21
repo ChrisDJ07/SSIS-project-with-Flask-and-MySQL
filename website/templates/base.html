@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main-header.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/content.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/overlay.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 
   </head>
@@ -36,7 +38,7 @@
               <div class="tab-icon">
                 <i class="fa fa-book tab-icon" aria-hidden="true"></i>
               </div>
-              <span class="canCollapse">Courses</span>
+              <span class="canCollapse">Programs</span>
             </a>
           </li>
           <li>
@@ -67,7 +69,41 @@
 
     </div>
     <!--CONTENT-->
+
+    <!--FORM OVERLAY-->
+    <div class="hidden-panel">
+        <div class="overlay-cover hide"></div> <!--Background cover-->
+        <div class="content">
+          {% block panelContent %}{% endblock %}
+          <!--Add if statement here Add/Save-->
+          <footer class="sideFooter">
+            <button type="submit" id="submitFormBtn" form="mainform"  class="save-item-btn">Save</i>
+            </button>
+            <button class="close-panel-btn">Cancel</button>
+          </footer>
+        </div>
+        </div>
+    </div>
+    <!--FORM OVERLAY-->
+
+    <!--Flash Window-->
+    
+    <!--Flash Window-->
+
+    <!--ALERTS-->
+    <div id="alert-overlay" class="overlay-cover hide" onclick="closeConfirmDialog()"></div>
+    <div id="alert" class="alertWindow hide">
+        <p><b>Discard Unsaved Changes?</b></p>
+        <p>Closing this window will discard all your unsaved changes.</p>
+        <button class="close-alertButton" onclick="closeConfirmDialog()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <button class="discard-button button">Discard</button>
+        <button class="keep-edit-btn">Keep Editing</button>
+    </div>
+    <!--ALERTS-->
     
     <script src="{{ url_for('static', filename='js/website.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/actions.js') }}"></script>
   </body>
 </html>

@@ -31,6 +31,8 @@
     cursor: pointer;
 }
 
+
+/* Student */
 .student-id {
     width: 10%;
     margin-left: -20px;
@@ -51,6 +53,33 @@
 .gender {
     width: 15%;
 }
+
+
+/* Program */
+.course-code {
+    width: 10%;
+    margin-left: -20px;
+}
+
+.course-name {
+    width: 50%;
+}
+
+.course-college {
+    width: 15%;
+}
+
+
+/* College */
+.college-code {
+    width: 10%;
+    margin-left: -20px;
+}
+
+.college-name {
+    width: 60%;
+}
+
 
 .sort-button {
     border: none;
@@ -74,7 +103,6 @@ ul {
 
 li {
     display: flex;
-    cursor: pointer;
 }
 
 .table-row {
@@ -120,14 +148,13 @@ li {
     padding: 8px 15px;
     border-radius: 5px;
     border: none;
-    background-color: var(--button-hover);
-    color: white;
+    background-color: transparent;
+    color: var(--button-hover);
     margin-right: 9px;
 }
 
 .edit-data:hover {
-    border: 2px solid var(--button);
-    background-color: transparent;
-    color: var(--button);
+    background-color: hwb(211 53% 1%);
+    color: white;
     cursor: pointer;
 }

@@ -1,7 +1,6 @@
-{% extends "base.html" %} {% block title %}Students{% endblock %}
+{% extends "base.html" %} {% block title %}Students{% endblock %} {% block panelTitle %}Student Data{% endblock %} {% block panelSubTitle %}Student Data:{% endblock %}
 
 {% block content %}
-
 <div class="student-table">
     <div class="table-headers">
       <div class="check table-header">
@@ -55,5 +54,69 @@
 
   </div>
 </div>
+{% endblock %}
 
+
+{% block panelContent %}
+<header class="sideHeader"> 
+    <!--Add if condition Add/Edit-->
+    <p>Student Data</p>
+</header>
+
+<main>
+    <div class="mainDetails">
+      <!--Add if condition Add/Edit-->
+      <p>Student Data</p>
+
+      <form method="POST" id="mainForm">
+        <div class="form-group form-text" onclick="expandForm(this)">
+          <label for = "student-id">Student ID</label>
+          <input type="text" id="student-id" name="student-id" class="inputText hide" placeholder="Enter Student ID..">
+        </div>
+        <div class="form-group form-text" onclick="expandForm(this)">
+          <label for = "first-name">First Name</label>
+          <input type="text" id="first-name" name="first-name" class="inputText hide" placeholder="Enter First Name..">
+        </div>
+        <div class="form-group form-text" onclick="expandForm(this)">
+          <label for = "last-name">Last Name</label>
+          <input type="text" id="last-name" name="last-name" class="inputText hide" placeholder="Enter Last Name..">
+        </div>
+        <div class="form-group dropdwn">
+            <label for = "courses">Courses</label>
+            <select id="courses" name="courses" placeholder="Select Course..">
+                <!--Iterate courses-->
+                <option value="" disabled selected hidden>Select a course</option>
+                <option value="value1">Volvo</option>
+                <option value="value2">Saab</option>
+                <option value="value3">Fiat</option>
+                <option value="value4">Audi</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for = "year-level">Year Level</label>
+            <div class="radiobtn">
+              <input type="radio" id="year1" name="year" value="1">
+              <label for="year1">1</label>
+              <input type="radio" id="year2" name="year" value="2">
+              <label for="year2">2</label>
+              <input type="radio" id="year3" name="year" value="3">
+              <label for="year3">3</label>
+              <input type="radio" id="year4" name="year" value="4">
+              <label for="year4">4</label>
+            </div>
+          </div>
+          <div class="form-group dropdwn">
+              <label for = "gender">Gender</label>
+              <select id="gender" name="courses">
+                  <option value="" disabled selected hidden>Select a gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                  <option value="Others">Others</option>
+              </select>
+            </div>
+      </form>
+
+    </div>
+</main>
 {% endblock %}

@@ -39,7 +39,7 @@
     border: 2px solid var(--background);
     font-size: 1rem;
     color: hwb(38 78% 42%);
-    border-radius: 30px;
+    border-radius: 5px 0 0 5px;
 }
 
 .search-field:focus {
@@ -47,13 +47,16 @@
 }
 
 .search-btn {
-    padding: 12px;
-    border-radius: 30px;
+    padding: 13px;
+    border-radius: 0 5px 5px 0;
     font-size: .8rem;
     color: white;
     background-color: var(--button);
     cursor: pointer;
     border: none;
+    margin-left: -6px;
+    position: relative;
+    top: -1px;
 }
 
 .search-btn:hover {

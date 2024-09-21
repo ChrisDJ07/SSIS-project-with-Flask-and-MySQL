@@ -7,6 +7,10 @@
     --button-hover: hwb(211 16% 20%);
 }
 
+.hide {
+    display: none;
+}
+
 /* * {
     border: 1px solid;
 } */
@@ -17,6 +21,7 @@ body {
     height: 100vh;
     font-family: "Poppins", sans-serif;
     display: flex;
+    overflow: hidden;
 }
 
 .sidebar {

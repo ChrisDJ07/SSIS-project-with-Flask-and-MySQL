@@ -1,0 +1,107 @@
+/* Add form stuff */
+.form-group {
+    border: 1px solid #d8dadb;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    height: 45px;
+    align-items: center;
+}
+
+.form-group:hover {
+    border-color: #bfc1c2;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.form-group label {
+    position: relative;
+    top: 10px;
+    font-size: 1em;
+    margin: 0;
+    color: #005670;
+    transition: 0.2s;
+}
+
+.inputText {
+    border: none;
+    font-size: 1em;
+    width: 100%;
+    background-color: transparent;
+}
+
+.inputText:focus {
+    outline: none;
+}
+
+/* Dropdown Design */
+.dropdwn label {
+    position: relative;
+    top: 0px;
+}
+
+.form-group select {
+    border: 1px solid #d8dadb;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 1em;
+    background-color: white;
+    width: 70%;
+    color: #005670;
+    appearance: none;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.form-group select:hover {
+    border-color: #bfc1c2;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #418697;
+}
+
+.form-group select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="none" stroke="%23005670" stroke-width="3" d="M6 9l6 6 6-6"/></svg>') no-repeat right 10px center;
+    background-size: 10px;
+}
+
+/* Radio Design */
+.radiobtn {
+    display: flex;
+    position: relative;
+    left: 90px;
+    top: -29px;
+}
+
+.radiobtn input[type="radio"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.radiobtn label {
+    font-size: 1em;
+    color: #005670;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: 1px solid #d8dadb;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.radiobtn label:hover {
+    background-color: #f1f1f1;
+}
+
+.radiobtn input[type="radio"]:checked+label {
+    background-color: #418697;
+    color: white;
+    border-color: #418697;
+}
