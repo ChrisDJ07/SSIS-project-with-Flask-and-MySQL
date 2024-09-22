@@ -59,6 +59,13 @@ export function confirmWindow(type) {
         proceedBtn.textContent = "Proceed Delete";
 
     }
+    else if (type == 'delAll') {
+        window_head.textContent = "Delete all Selected?";
+        window_msg.textContent = "Proceeding will remove all selected from the database. Are you sure?";
+        discardBtn.textContent = "Cancel";
+        proceedBtn.textContent = "Proceed Delete";
+
+    }
     else if (type == 'edit') {
         window_head.textContent = "Overwrite this field?";
         window_msg.textContent = "Overwriting this will update it from the database. Are you sure?";
@@ -189,3 +196,42 @@ document.addEventListener("click", function (event) {
         }
     });
 });
+
+
+// Select-all checkbox
+document.querySelector('#select-all').addEventListener('change', function () {
+    // Get all item checkboxes, set them to checked
+    const itemCheckboxes = document.querySelectorAll('#select-item');
+    itemCheckboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+    toggleDeleteSelected();
+});
+
+// Add listener to all item checkbox
+document.querySelectorAll('#select-item').forEach(checkbox => {
+    checkbox.addEventListener('change', toggleDeleteSelected);
+});
+
+// Show delete-selected button
+export function toggleDeleteSelected() {
+    const button = document.querySelector(".delete-selected-btn");
+    if (countCheckedCheckboxes() > 0) {
+        button.classList.remove('hide');
+    }
+    else {
+        button.classList.add('hide');
+    }
+}
+// count checked checkboxes on list
+function countCheckedCheckboxes() {
+    const checkboxes = document.querySelectorAll('#select-item');
+    let count = 0;
+    // Iterate over checkboxes and count the checked ones
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            count++;
+        }
+    });
+    return count;
+}

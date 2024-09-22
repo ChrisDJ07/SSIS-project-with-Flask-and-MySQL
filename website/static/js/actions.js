@@ -84,3 +84,47 @@ document.querySelector(".search-btn").addEventListener('click', function () {
         });
     }
 });
+
+// Delete Selected
+document.querySelector(".delete-selected-btn").addEventListener('click', async function () {
+    // Array to store the values
+    const selectedValues = [];
+    const type = document.title.toLowerCase();
+
+    // Iterate over checkboxes
+    const checkboxes = document.querySelectorAll('#select-item');
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            const listItem = checkbox.closest('li');
+            const code_id = listItem.querySelector('span.table-data').textContent; // Get the first .table-data value
+            selectedValues.push(code_id); // Add to the array
+        }
+    });
+
+    const status = await confirmWindow('delAll');
+    if (status == 'proceed') {
+        fetch('delete-selected', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+            },
+            body: JSON.stringify({
+                type: type,
+                selectedValues: selectedValues
+            }),
+        }).then((_res) => {
+            if (_res.ok) {
+                if (type == 'colleges') {
+                    window.location.href = 'colleges';  // Redirect to page on success
+                }
+            } else {
+                flash(`Failed to delete selection.`, category = 'error');  // Handle any error responses
+            }
+        }).catch((error) => {
+            console.error('Error:', error);
+            alert("An error occurred.");
+        });
+    }
+    console.log(selectedValues);
+});

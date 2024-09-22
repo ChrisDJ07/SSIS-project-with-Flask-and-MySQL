@@ -57,3 +57,16 @@ def delete_field():
         flash("College deleted successfully!", category="success")
         
     return jsonify({}) 
+
+@views.route('/delete-selected', methods=['POST'])
+def delete_selected():
+    data = json.loads(request.data)
+    type = data['type']
+    list = data['selectedValues']
+    
+    if (type == 'colleges'):
+        for item in list:
+            Colleges.deleteCollege(item)
+        flash("Selected Colleges deleted successfully!", category="success")
+        
+    return jsonify({}) 

@@ -162,3 +162,21 @@ li {
     color: white;
     cursor: pointer;
 }
+
+/* Delete Selected button */
+.delete-selected-btn {
+    position: absolute;
+    right: 40px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: hsl(0, 100%, 60%);
+    color: white;
+    text-align: center;
+    border: none;
+    font-size: 0.8rem;
+}
+
+.delete-selected-btn:hover {
+    cursor: pointer;
+    background-color: hsl(0, 100%, 70%);
+}
