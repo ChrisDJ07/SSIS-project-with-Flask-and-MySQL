@@ -57,3 +57,30 @@ export async function deleteField(event, type) {
         });
     }
 }
+
+// Search/filter function
+document.querySelector(".search-btn").addEventListener('click', function () {
+    const inputField = document.querySelector(".search-field");
+    let keyword = inputField.value;
+    keyword = keyword.trim().toLowerCase();
+
+    const listItems = document.querySelectorAll('.myList li');
+
+    if (keyword == '') {
+        listItems.forEach(item => {
+            item.style.display = ''; // Show all items
+        });
+        inputField.value = ''; //clear search field
+        inputField.blur();
+    }
+    else {
+        listItems.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(keyword)) {
+                item.style.display = ''; // Show item/s
+            } else {
+                item.style.display = 'none'; // Hide item/s
+            }
+        });
+    }
+});

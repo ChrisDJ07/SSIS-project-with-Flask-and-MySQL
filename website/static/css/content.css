@@ -5,6 +5,10 @@
     --button-hover: hwb(211 16% 20%);
 }
 
+.myList {
+    max-height: 80vh;
+    overflow-y: auto;
+}
 
 /* Table Header */
 .table-headers {
@@ -12,7 +16,7 @@
     padding: 10px 0;
     padding-right: 150px;
     margin: 0 30px 0 30px;
-    border-bottom: 1px solid #bfc1c2;
+    border-bottom: 2px solid #bfc1c2;
     display: flex;
     justify-content: space-between;
 }
