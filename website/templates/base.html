@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/content.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/overlay.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash.css') }}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 
   </head>
@@ -19,7 +20,7 @@
     <div class="sidebar">
       <div class="side-header">
         <button class="collapse-btn">
-          <i class="fa fa-bars" onclick="toggle_sidebar()"></i>
+          <i class="fa fa-bars"></i>
         </button>
         <p class="banner">SSIS</p>
       </div>
@@ -57,7 +58,7 @@
     <!--CONTENT-->
     <div class="main-container">
         <div class="main-header">
-            <button class="main-button" id="add-account" onclick="open_Details('accountAdd-overlay')">
+            <button class="main-button add-data" id="add-account">
               <i class="fa fa-plus-circle add-icon" aria-hidden="true"></i> Create New </button>
             <form class="search-form" method ="POST">
                 <input type="text" class="search-field" id="search" name="search" placeholder="Search..."/>
@@ -75,7 +76,8 @@
         <div class="overlay-cover hide"></div> <!--Background cover-->
         <div class="content">
           {% block panelContent %}{% endblock %}
-          <!--Add if statement here Add/Save-->
+          <!--Error Window-->
+          <div class="error-window hide"></div>
           <footer class="sideFooter">
             <button type="submit" id="submitFormBtn" form="mainform"  class="save-item-btn">Save</i>
             </button>
@@ -86,24 +88,45 @@
     </div>
     <!--FORM OVERLAY-->
 
-    <!--Flash Window-->
-    
-    <!--Flash Window-->
-
     <!--ALERTS-->
-    <div id="alert-overlay" class="overlay-cover hide" onclick="closeConfirmDialog()"></div>
+    <div id="alert-overlay" class="overlay-cover hide"></div>
     <div id="alert" class="alertWindow hide">
-        <p><b>Discard Unsaved Changes?</b></p>
-        <p>Closing this window will discard all your unsaved changes.</p>
-        <button class="close-alertButton" onclick="closeConfirmDialog()">
+        <p class="alert-window-header"><b></b></p>
+        <p class="alert-window-message"></p>
+        <button class="close-alertButton">
             <i class="fa fa-times" aria-hidden="true"></i>
         </button>
-        <button class="discard-button button">Discard</button>
-        <button class="keep-edit-btn">Keep Editing</button>
+        <button class="discard-button button"></button>
+        <button class="proceed-button"></button>
     </div>
     <!--ALERTS-->
+
+    <!--Flash-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flashed-messages">
+          {% for category, message in messages %}
+              <div class="alert-message {{ category }}">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" onclick="closeFlash()">
+                    Dismiss
+                  </button>
+              </div>
+          {% endfor %}
+      </div>
+    {% endif %}
+    {% endwith %}
+    <!--Flash-->
     
-    <script src="{{ url_for('static', filename='js/website.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/actions.js') }}"></script>
+
+    {% block javaScript %}{% endblock %}
+    <script type="module" src="{{ url_for('static', filename='js/UI.js') }}" defer></script>
+    <script type="module" src="{{ url_for('static', filename='js/actions.js') }}"></script>
+
+    <script>
+      function closeFlash() {
+        document.querySelector(".flashed-messages").style.display = 'none';
+      }
+    </script>
   </body>
 </html>

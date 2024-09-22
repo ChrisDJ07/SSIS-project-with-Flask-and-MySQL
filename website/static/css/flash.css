@@ -1,0 +1,56 @@
+/* General Alert Styling */
+.alert-message {
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Align the dismiss button to the right */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: 80%;
+
+    position: absolute;
+    top: 0px;
+    left: 16%;
+    transform: translateY(-80px);
+    z-index: 9999;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Success Alert */
+.alert-message.success {
+    background-color: hsl(120, 60%, 90%);
+    color: hsl(120, 40%, 30%);
+    border-left: 5px solid hsl(120, 40%, 40%);
+    transform: translateY(0px);
+}
+
+/* Error Alert */
+.alert-message.error {
+    background-color: hsl(0, 60%, 90%);
+    color: hsl(0, 50%, 30%);
+    border-left: 5px solid hsl(0, 50%, 40%);
+    transform: translateY(0px);
+}
+
+/* Close Button Styling */
+.close {
+    background: none;
+    border: none;
+    color: hsl(0, 0%, 40%);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.close:hover {
+    background-color: hsl(0, 0%, 85%);
+    color: hsl(0, 0%, 20%);
+}

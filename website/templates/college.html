@@ -20,17 +20,19 @@
 
     <div class="college-list">
         <ul>
-            <li>
-                <div class="table-row">
-                    <span class="check table-data"><input type="checkbox" id="select-all" name="select-all"></span>
-                    <span class="college-code table-data">CCS</span>
-                    <span class="college-name table-data">College of Computer Studies</span>
-                </div>
-                <div class="tableBtn-container">
-                    <button class="edit-data table-button">Edit</button>
-                    <button class="delete-data table-button"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                </div>
-            </li>
+          {% for item in data %}
+          <li>
+              <div class="table-row">
+                  <span class="check"><input type="checkbox" id="select-all" name="select-all"></span>
+                  <span class="college-code table-data">{{ item[0] }}</span>
+                  <span class="college-name table-data">{{ item[1] }}</span>
+              </div>
+              <div class="tableBtn-container">
+                  <button class="edit-data table-button">Edit</button>
+                  <button class="delete-data table-button"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+              </div>
+          </li>
+          {% endfor %}
         </ul>
     </div>
 
@@ -41,26 +43,26 @@
 
 {% block panelContent %}
 <header class="sideHeader"> 
-    <!--Add if condition Add/Edit-->
-    <p>College Data</p>
+    <p><strong class="mode-label"></strong><br>College Data</p>
 </header>
 
 <main>
     <div class="mainDetails">
-      <!--Add if condition Add/Edit-->
-      <p>College Data</p>
-
       <form method="POST" id="mainForm">
-        <div class="form-group form-text" onclick="expandForm(this)">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group form-text">
           <label for = "college-code">College Code</label>
           <input type="text" id="college-code" name="college-code" class="inputText hide" placeholder="Enter College code..">
         </div>
-        <div class="form-group form-text" onclick="expandForm(this)">
+        <div class="form-group form-text">
           <label for = "college-name">College Name</label>
           <input type="text" id="college-name" name="college-name" class="inputText hide" placeholder="Enter College name..">
         </div>
       </form>
-
     </div>
 </main>
+{% endblock %}
+
+{% block javaScript %}
+<script type="module" src="{{ url_for('static', filename='js/college.js') }}"></script>
 {% endblock %}

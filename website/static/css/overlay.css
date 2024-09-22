@@ -55,6 +55,21 @@
     border: 1px solid #bfc1c2;
 }
 
+/* Error Window */
+.error-window {
+    position: absolute;
+    bottom: 100px;
+    right: 20px;
+    height: 30px;
+    width: 90%;
+    text-align: center;
+    border: 2px solid #e95855;
+    border-radius: 5px;
+    color: red;
+    font-size: 0.9rem;
+    padding-top: 5px;
+}
+
 
 /* Buttons */
 .close-panel-btn {
@@ -71,7 +86,7 @@
 }
 
 .save-item-btn,
-.keep-edit-btn,
+.proceed-button,
 .close-alertButton {
     font-size: 1em;
     padding: 10px 18px;
@@ -82,7 +97,7 @@
 }
 
 .save-item-btn:hover,
-.keep-edit-btn:hover,
+.proceed-button:hover,
 .close-alertButton:hover {
     background-color: #418697;
     cursor: pointer;
