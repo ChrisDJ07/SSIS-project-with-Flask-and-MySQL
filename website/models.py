@@ -125,9 +125,7 @@ class Courses:
             SET course_code = %s, course_name = %s, college_code = %s
             WHERE course_code = %s;
         """
-        print(query)
         data = (code, name, college_code, original_code)
-        print(data)
         rows_affected, error = execute_query(query, data)
         
         if error:
@@ -165,14 +163,76 @@ class Courses:
         query = "SELECT * FROM course"
         result, error = execute_query(query, fetch=True)
         return result
+
+
+
+class Students:
+    @staticmethod
+    def addStudent(id, first_name, last_name, course_code, year, gender):
+        query = """
+            INSERT INTO student (student_id, first_name, last_name, course_code, year_level, gender)
+            VALUES (%s, %s, %s, %s, %s, %s);
+        """
+        data = (id, first_name, last_name, course_code, year, gender)
+        print(data)
+        rows_affected, error = execute_query(query, data)
+        
+        if error:
+            print(f"Failed to insert data: {error}")
+            return None, error  # Return None and the error message
+        elif rows_affected > 0:
+            print("Data inserted successfully!")
+            return rows_affected, None  # Return rows affected and no error
+        
+    @staticmethod
+    def updateStudent(original_id, new_id, new_first_name, new_last_name, new_course_code, new_year, new_gender):
+        query = """
+            UPDATE student
+            SET student_id = %s, first_name = %s, last_name = %s, course_code = %s, year_level = %s, gender = %s
+            WHERE student_id = %s;
+        """
+        data = (new_id, new_first_name, new_last_name, new_course_code, new_year, new_gender, original_id)
+        print(data)
+        rows_affected, error = execute_query(query, data)
+        
+        if error:
+            print(f"Failed to update data: {error}")
+            return None, error  # Return None and the error message
+        elif rows_affected > 0:
+            print("Data updated successfully!")
+            return rows_affected, None  # Return rows affected and no error
+        else:
+            # If no rows are affected, return a message explaining that
+            return None, "No rows were updated."
+
+    @staticmethod
+    def deleteStudent(id):
+        query = "DELETE FROM student WHERE student_id = %s;"
+        data = (id,)
+        rows_affected, error = execute_query(query, data)
+        
+        if error:
+            print(f"Failed to delete data: {error}")
+            return None, error  # Return None and the error message
+        elif rows_affected > 0:
+            print("Data deleted successfully!")
+            return rows_affected, None  # Return rows affected and no error
+
+    @staticmethod
+    def getStudent(id):
+        query = "SELECT * FROM student WHERE student_id = %s;"
+        data = (id,)
+        result, error = execute_query(query, data, fetch=True)
+        return result
+
+    @staticmethod
+    def getAllStudents():
+        query = "SELECT * FROM student"
+        result, error = execute_query(query, fetch=True)
+        return result
     
     
 def main():
-    # Courses.addCourse("BSCS", "Bachelor of Science", "CCS")
-    # Courses.deleteCourse("BSCS");
-    # Courses.updateCourse("BSCS", "BS", "Bachelor", "CCS");
-    # print(Courses.getCourse("BS"));
-    # print(Courses.getAllCourses());
     pass
     
 if __name__ == "__main__":

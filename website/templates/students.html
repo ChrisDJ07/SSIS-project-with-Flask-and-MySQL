@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %}Students{% endblock %} {% block panelTitle %}Student Data{% endblock %} {% block panelSubTitle %}Student Data:{% endblock %}
+{% extends "base.html" %} {% block title %}Students{% endblock %}
 
 {% block content %}
 <div class="student-table">
@@ -8,47 +8,57 @@
       </div>
       <div class="student-id table-header">
         <button class="sort-button hidden">Student ID
-            <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+            <i class="fa" aria-hidden="true"></i>
         </button>
       </div>
       <div class="name table-header">
         <button class="sort-button hidden">Name
-            <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+            <i class="fa" aria-hidden="true"></i>
         </button>
       </div>
       <div class="course table-header">
         <button class="sort-button hidden">Course
-            <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+            <i class="fa" aria-hidden="true"></i>
         </button>
       </div>
       <div class="year table-header">
         <button class="sort-button hidden">Year
-            <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+            <i class="fa" aria-hidden="true"></i>
         </button>
       </div>
       <div class="gender table-header">
         <button class="sort-button hidden">Gender
-            <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+            <i class="fa" aria-hidden="true"></i>
         </button>
       </div>
     </div>
 
-    <div class="student-list">
+    <div class="myList">
         <ul>
+          {% for item in data %}
             <li>
                 <div class="table-row">
-                    <span class="check table-data"><input type="checkbox" id="select-all" name="select-all"></span>
-                    <span class="student-id table-data">2022-0137</span>
-                    <span class="name table-data">Christian Dave Janiola</span>
-                    <span class="course table-data">BSCS</span>
-                    <span class="year table-data">2</span>
-                    <span class="gender table-data">Male</span>
+                    <span class="check"><input type="checkbox" id="select-item" name="select-item"></span>
+                    <span class="student-id table-data student-data">{{ item[0] }}</span>
+                    <span class="name table-data ">{{ item[1] }} {{ item[2] }}</span> <!--IM A FUCKING GENIUS!!!-->
+                    <span class="student-data hide">{{ item[1] }}</span>
+                    <span class="student-data hide">{{ item[2] }}</span>
+                    <span class="course table-data student-course-drop">
+                      {% if item[3] is none %}
+                        No Course
+                      {% else %}
+                        {{ item[3] }}
+                      {% endif %}
+                    </span>
+                    <span class="year table-data student-year-radio">{{ item[4] }}</span>
+                    <span class="gender table-data student-gender-drop">{{ item[5] }}</span>
                 </div>
                 <div class="tableBtn-container">
                     <button class="edit-data table-button">Edit</button>
                     <button class="delete-data table-button"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                 </div>
             </li>
+            {% endfor %}
         </ul>
     </div>
 
@@ -65,30 +75,29 @@
 <main>
     <div class="mainDetails">
       <form method="POST" id="mainForm">
-        <div class="form-group form-text" onclick="expandForm(this)">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group form-text">
           <label for = "student-id">Student ID</label>
-          <input type="text" id="student-id" name="student-id" class="inputText hide" placeholder="Enter Student ID..">
+          <input type="text" id="student-id" name="student-id" class="inputText hide" placeholder="Enter Student ID (20XX-XXXX)..">
         </div>
-        <div class="form-group form-text" onclick="expandForm(this)">
+        <div class="form-group form-text">
           <label for = "first-name">First Name</label>
           <input type="text" id="first-name" name="first-name" class="inputText hide" placeholder="Enter First Name..">
         </div>
-        <div class="form-group form-text" onclick="expandForm(this)">
+        <div class="form-group form-text">
           <label for = "last-name">Last Name</label>
           <input type="text" id="last-name" name="last-name" class="inputText hide" placeholder="Enter Last Name..">
         </div>
         <div class="form-group dropdwn">
             <label for = "courses">Courses</label>
-            <select id="courses" name="courses" placeholder="Select Course..">
-                <!--Iterate courses-->
+            <select id="courses" name="courses">
                 <option value="" disabled selected hidden>Select a course</option>
-                <option value="value1">Volvo</option>
-                <option value="value2">Saab</option>
-                <option value="value3">Fiat</option>
-                <option value="value4">Audi</option>
+                {% for course in courses %}
+                <option value="{{ course[0] }}">{{ course[0] }}</option>
+                {% endfor %}
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group radio">
             <label for = "year-level">Year Level</label>
             <div class="radiobtn">
               <input type="radio" id="year1" name="year" value="1">
@@ -105,14 +114,17 @@
               <label for = "gender">Gender</label>
               <select id="gender" name="gender">
                   <option value="" disabled selected hidden>Select a gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                   <option value="Prefer not to say">Prefer not to say</option>
                   <option value="Others">Others</option>
               </select>
             </div>
       </form>
-
     </div>
 </main>
+{% endblock %}
+
+{% block javaScript %}
+<script type="module" src="{{ url_for('static', filename='js/student.js') }}"></script>
 {% endblock %}

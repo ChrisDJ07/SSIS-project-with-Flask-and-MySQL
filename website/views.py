@@ -1,14 +1,37 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
-from .models import Colleges, Courses
+from .models import Colleges, Courses, Students
 import json
 
 views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET', 'POST'])
 def home():
-    data = request.form
-    print(data)
-    return render_template('students.html')
+    if request.method == 'POST':
+        code = request.form.get('course-code')
+        name = request.form.get('course-name')
+        college_code = request.form.get('college')
+        
+        id = request.form.get('student-id')
+        first_name = request.form.get('first-name')
+        last_name = request.form.get('last-name')
+        course_code = request.form.get('courses')
+        year_level = request.form.get('year')
+        gender = request.form.get('gender')
+        
+        # make sure year_level is int
+        year_level = int(year_level)
+        
+        # Add the course and check the returned status
+        status, error_message = Students.addStudent(id, first_name, last_name, course_code, year_level, gender)
+        
+        if error_message:
+            flash(f"Operation Failed: {error_message}", category="error")
+        else:
+            flash("Student added successfully!", category="success")
+        
+        return redirect(url_for('views.home'))
+    
+    return render_template('students.html', data=Students.getAllStudents(), courses=Courses.getAllCourses())
 
 @views.route('courses', methods=['GET', 'POST'])
 def courses():
@@ -73,6 +96,12 @@ def update_field():
             flash(f"Operation Failed: {error_message}", category="error")
         else:
             flash("Course updated successfully!", category="success")
+    elif(type == 'student'):
+        status, error_message = Students.updateStudent(data['old_code'], data['new_id'], data['new_first_name'], data['new_last_name'], data['new_course_code'], data['new_year'], data['new_gender'])
+        if error_message:
+            flash(f"Operation Failed: {error_message}", category="error")
+        else:
+            flash("Student updated successfully!", category="success")
         
     return jsonify({}) 
 
@@ -88,6 +117,9 @@ def delete_field():
     elif (type == 'course'):
         Courses.deleteCourse(data['id'])
         flash("Course deleted successfully!", category="success")
+    elif (type == 'student'):
+        Students.deleteStudent(data['id'])
+        flash("Student deleted successfully!", category="success")
         
     return jsonify({}) 
 
@@ -105,5 +137,9 @@ def delete_selected():
         for item in list:
             Courses.deleteCourse(item)
         flash("Selected Courses deleted successfully!", category="success")
+    elif (type == 'students'):
+        for item in list:
+            Students.deleteStudent(item)
+        flash("Selected Students deleted successfully!", category="success")
         
     return jsonify({}) 

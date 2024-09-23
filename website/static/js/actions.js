@@ -45,6 +45,42 @@ export function edit(event) {
             }
         }
     }
+    // Select dropdown for student course,gender, and chosen year
+    if (type == 'students') {
+        const table_data = row.querySelectorAll(".student-data");
+        let iterator = 0;
+        table_data.forEach(data => {
+            form_field[iterator].value = data.textContent.trim();  // Populate form with data
+            iterator += 1;
+        });
+        // Set the value of the dropdown (for Course)
+        const courseDropdown = document.getElementById("courses");
+        const courseValue = row.querySelector('.student-course-drop').textContent.trim();
+        // Set the dropdown value
+        for (let option of courseDropdown.options) {
+            if (option.value === courseValue) {
+                option.selected = true;
+                break;
+            }
+        }
+        // Set the value of the dropdown (for Gender)
+        const genderDropdown = document.getElementById("gender");
+        const genderValue = row.querySelector('.student-gender-drop').textContent.trim();
+        for (let option of genderDropdown.options) {
+            if (option.value === genderValue) {
+                option.selected = true;
+                break;
+            }
+        }
+        //Set year
+        const year = row.querySelector('.student-year-radio').textContent.trim();
+        const yearRadios = document.querySelectorAll('input[name="year"]');
+        yearRadios.forEach(radio => {
+            if (radio.value == year) {
+                radio.checked = true;
+            }
+        });
+    }
 
     expandAllForm();
     show_sidebar();
@@ -74,6 +110,9 @@ export async function deleteField(event, type) {
                 }
                 else if (type == 'course') {
                     window.location.href = 'courses';  // Redirect to page on success
+                }
+                else if (type == 'student') {
+                    window.location.href = '/';  // Redirect to page on success
                 }
             } else {
                 showAlert(`Failed to delete ${type}.`);  // Handle any error responses
@@ -166,6 +205,9 @@ document.querySelector(".delete-selected-btn").addEventListener('click', async f
                 }
                 else if (type == 'courses') {
                     window.location.href = 'courses';  // Redirect to page on success
+                }
+                else if (type == 'students') {
+                    window.location.href = '/';  // Redirect to page on success
                 }
             } else {
                 flash(`Failed to delete selection.`, category = 'error');  // Handle any error responses

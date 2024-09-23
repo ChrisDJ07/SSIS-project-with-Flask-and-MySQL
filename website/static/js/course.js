@@ -11,6 +11,8 @@ document.querySelectorAll('.delete-data').forEach(button => {
 const submitBtn = document.querySelector("#submitFormBtn");
 submitBtn.addEventListener('click', function () {
     const mode = document.querySelector(".mode-label").textContent;
+    // uhm, these are basically doing the same thing???
+    // but if it ain't broke...
     if (mode === 'ADD') {
         const code = document.querySelector("#course-code").value;
         const course_name = document.querySelector("#course-name").value;
@@ -21,7 +23,6 @@ submitBtn.addEventListener('click', function () {
         const new_code = document.getElementById("course-code").value;
         const new_name = document.getElementById("course-name").value;
         let new_college_code = document.getElementById("college").value;
-        console.log(`${old_code} ${new_code} ${new_name} ${new_college_code}`);
         editCourse(old_code, new_code, new_name, new_college_code);
     }
 });
