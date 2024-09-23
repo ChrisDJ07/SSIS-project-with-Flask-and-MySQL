@@ -1,4 +1,4 @@
-import { show_sidebar, expandAllForm, confirmWindow, showAlert } from './UI.js'
+import { show_sidebar, expandAllForm, confirmWindow, showAlert, toggleDeleteSelected } from './UI.js'
 
 // Call this function when adding
 document.querySelector(".add-data").addEventListener("click", add);
@@ -58,8 +58,19 @@ export async function deleteField(event, type) {
     }
 }
 
+// Add Listener to search submit
+document.querySelector(".search-btn").addEventListener('click', filter);
+// Add behaviour when pressing 'enter'
+document.getElementById('search').addEventListener('keydown', function (event) {
+    // Check if the pressed key is "Enter"
+    if (event.key === "Enter") {
+        event.preventDefault();  // Prevent form submission
+        filter();
+    }
+});
+
 // Search/filter function
-document.querySelector(".search-btn").addEventListener('click', function () {
+function filter() {
     const inputField = document.querySelector(".search-field");
     let keyword = inputField.value;
     keyword = keyword.trim().toLowerCase();
@@ -83,7 +94,14 @@ document.querySelector(".search-btn").addEventListener('click', function () {
             }
         });
     }
-});
+    // Clear checkbox
+    const checkboxes = document.querySelectorAll('#select-item');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    // Check for toggle delete selected
+    toggleDeleteSelected();
+}
 
 // Delete Selected
 document.querySelector(".delete-selected-btn").addEventListener('click', async function () {
@@ -128,3 +146,68 @@ document.querySelector(".delete-selected-btn").addEventListener('click', async f
     }
     console.log(selectedValues);
 });
+
+
+// Add listeners to column header buttons
+const sort_buttons = document.querySelectorAll(".sort-button"); //Get button elements
+const buttons = Array.from(sort_buttons); //Store to array
+sort_buttons.forEach(button => {
+    button.addEventListener('click', function () {
+        sortList(buttons.indexOf(button))
+    });
+});
+
+// Sort rows by column
+let sort_direction = 'asc';
+function sortList(column) {
+    const list = document.querySelector('.myList');
+    const items = list.querySelectorAll('li');
+
+    // Convert NodeList to Array for sorting
+    const itemsArray = Array.from(items);
+
+    // Sort the array based on text content of the column
+    itemsArray.sort((a, b) => {
+        const itemA = a.querySelectorAll('.table-data')[column].textContent.trim();
+        const itemB = b.querySelectorAll('.table-data')[column].textContent.trim();
+
+        // Toggle sorting direction
+        if (sort_direction === 'asc') {
+            showSortIcon(column, sort_direction);
+            return itemA.localeCompare(itemB);
+
+        } else {
+            showSortIcon(column, sort_direction);
+            return itemB.localeCompare(itemA);
+        }
+    });
+
+    // Append sorted items into list
+    itemsArray.forEach(item => list.appendChild(item));
+
+    // Toggle sort direction for next click
+    sort_direction = sort_direction === 'asc' ? 'desc' : 'asc';
+}
+
+//Show sort icon on click
+function showSortIcon(column, direction) {
+    const button = document.querySelectorAll(".sort-button")[column];
+
+    // Hide other icons
+    document.querySelectorAll('.sort-button').forEach(btn => {
+        if (btn.textContent == button.textContent) {
+            btn.classList.remove('hidden');
+        }
+        else {
+            btn.classList.add("hidden");
+        }
+    });
+
+    if (direction === 'asc') {
+        button.querySelector('i').classList.remove('fa-angle-up');
+        button.querySelector('i').classList.add('fa-angle-down');
+    } else {
+        button.querySelector('i').classList.remove('fa-angle-down');
+        button.querySelector('i').classList.add('fa-angle-up');
+    }
+}
