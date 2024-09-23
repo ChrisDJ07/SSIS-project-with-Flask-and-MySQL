@@ -8,19 +8,43 @@ function add() {
 }
 
 // Call this function when editing
+export let old_code;
 export function edit(event) {
+    const type = document.title.toLowerCase();
     document.querySelector(".mode-label").textContent = "EDIT";
     // Get the closest <li> parent of clicked
     const row = event.target.closest("li");
+    old_code = row.querySelector("span.table-data").textContent;
     // Find the table-data elements within this row
-    const table_data = row.querySelectorAll(".table-data");
     const form_field = document.querySelectorAll(".inputText");
 
-    let iterator = 0;
-    table_data.forEach(data => {
-        form_field[iterator].value = data.textContent.trim();  // Populate form with data
-        iterator += 1;
-    });
+    if (type == 'colleges') {
+        const table_data = row.querySelectorAll(".table-data");
+        let iterator = 0;
+        table_data.forEach(data => {
+            form_field[iterator].value = data.textContent.trim();  // Populate form with data
+            iterator += 1;
+        });
+    }
+    // Select dropdown for course college_code
+    if (type == 'courses') {
+        const table_data = row.querySelectorAll(".course-data");
+        let iterator = 0;
+        table_data.forEach(data => {
+            form_field[iterator].value = data.textContent.trim();  // Populate form with data
+            iterator += 1;
+        });
+        // Set the value of the dropdown (for College)
+        const collegeDropdown = document.getElementById("college");
+        const collegeValue = row.querySelector('.course-drop').textContent.trim();
+        // Set the dropdown value
+        for (let option of collegeDropdown.options) {
+            if (option.value === collegeValue) {
+                option.selected = true;
+                break;
+            }
+        }
+    }
 
     expandAllForm();
     show_sidebar();
@@ -47,6 +71,9 @@ export async function deleteField(event, type) {
             if (_res.ok) {
                 if (type == 'college') {
                     window.location.href = 'colleges';  // Redirect to page on success
+                }
+                else if (type == 'course') {
+                    window.location.href = 'courses';  // Redirect to page on success
                 }
             } else {
                 showAlert(`Failed to delete ${type}.`);  // Handle any error responses
@@ -99,6 +126,7 @@ function filter() {
     checkboxes.forEach(checkbox => {
         checkbox.checked = false;
     });
+    document.querySelector('#select-all').checked = false;
     // Check for toggle delete selected
     toggleDeleteSelected();
 }
@@ -135,6 +163,9 @@ document.querySelector(".delete-selected-btn").addEventListener('click', async f
             if (_res.ok) {
                 if (type == 'colleges') {
                     window.location.href = 'colleges';  // Redirect to page on success
+                }
+                else if (type == 'courses') {
+                    window.location.href = 'courses';  // Redirect to page on success
                 }
             } else {
                 flash(`Failed to delete selection.`, category = 'error');  // Handle any error responses

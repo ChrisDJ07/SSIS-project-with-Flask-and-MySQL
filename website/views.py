@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
-from .models import Colleges
+from .models import Colleges, Courses
 import json
 
 views = Blueprint('views', __name__)
@@ -12,9 +12,27 @@ def home():
 
 @views.route('courses', methods=['GET', 'POST'])
 def courses():
-    data = request.form
-    print(data)
-    return render_template('courses.html')
+    if request.method == 'POST':
+        code = request.form.get('course-code')
+        name = request.form.get('course-name')
+        college_code = request.form.get('college')
+        
+        # Remove whitespace and make upppercase
+        code = code.replace(" ", "").upper()
+        # remove the leading and trailing whitespace
+        name = name.strip()
+        
+        # Add the course and check the returned status
+        status, error_message = Courses.addCourse(code, name, college_code)
+        
+        if error_message:
+            flash(f"Operation Failed: {error_message}", category="error")
+        else:
+            flash("Course added successfully!", category="success")
+        
+        return redirect(url_for('views.courses'))
+    
+    return render_template('courses.html', data=Courses.getAllCourses(), colleges=Colleges.getAllColleges())
 
 @views.route('colleges', methods=['GET', 'POST'])
 def colleges():
@@ -22,13 +40,16 @@ def colleges():
         code = request.form.get('college-code')
         name = request.form.get('college-name')
         
-        # Remove whitespace and make upppercase
         code = code.replace(" ", "").upper()
-        # remove the leading and trailing whitespace
         name = name.strip()
         
-        Colleges.addCollege(code, name)
-        flash("College added successfully!", category="success")
+        # Add the college and check the returned status
+        status, error_message = Colleges.addCollege(code, name)
+    
+        if error_message:
+            flash(f"Operation Failed: {error_message}", category="error")
+        else:
+            flash("College added successfully!", category="success")  # Success message
         
         return redirect(url_for('views.colleges'))
     
@@ -41,8 +62,17 @@ def update_field():
     type = data['type']
     
     if (type == 'college'):
-        Colleges.updateCollege(data['old_code'], data['new_code'], data['new_name'])
-        flash("College updated successfully!", category="success")
+        status, error_message = Colleges.updateCollege(data['old_code'], data['new_code'], data['new_name'])
+        if error_message:
+            flash(f"Operation Failed: {error_message}", category="error")
+        else:
+            flash("College updated successfully!", category="success")  # Success message
+    elif(type == 'course'):
+        status, error_message = Courses.updateCourse(data['old_code'], data['new_code'], data['new_name'], data['new_college_code'])
+        if error_message:
+            flash(f"Operation Failed: {error_message}", category="error")
+        else:
+            flash("Course updated successfully!", category="success")
         
     return jsonify({}) 
 
@@ -55,6 +85,9 @@ def delete_field():
     if (type == 'college'):
         Colleges.deleteCollege(data['id'])
         flash("College deleted successfully!", category="success")
+    elif (type == 'course'):
+        Courses.deleteCourse(data['id'])
+        flash("Course deleted successfully!", category="success")
         
     return jsonify({}) 
 
@@ -68,5 +101,9 @@ def delete_selected():
         for item in list:
             Colleges.deleteCollege(item)
         flash("Selected Colleges deleted successfully!", category="success")
+    elif (type == 'courses'):
+        for item in list:
+            Courses.deleteCourse(item)
+        flash("Selected Courses deleted successfully!", category="success")
         
     return jsonify({}) 

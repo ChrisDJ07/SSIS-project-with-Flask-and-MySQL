@@ -6,7 +6,7 @@ document.querySelectorAll('.edit-data').forEach(button => {
 });
 
 // Adding actionListeners to form-fields
-document.querySelectorAll('.form-group').forEach(field => {
+document.querySelectorAll('.form-text').forEach(field => {
     field.addEventListener('click', function (event) {
         expandForm(event, this);
     });
@@ -174,7 +174,7 @@ function expandForm(event, element) {
 
 // Expand all form fields
 export function expandAllForm() {
-    const elements = document.querySelectorAll(".form-group");
+    const elements = document.querySelectorAll(".form-text");
     elements.forEach(element => {
         const input = element.querySelector("input");
         input.classList.remove("hide");

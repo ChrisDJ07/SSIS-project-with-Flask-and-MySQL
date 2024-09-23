@@ -4,7 +4,7 @@ import { deleteField, old_code } from './actions.js'
 // Add actionListeners to delete buttons
 document.querySelectorAll('.delete-data').forEach(button => {
     button.addEventListener('click', function (event) {
-        deleteField(event, 'college');
+        deleteField(event, 'course');
     });
 });
 
@@ -12,44 +12,50 @@ const submitBtn = document.querySelector("#submitFormBtn");
 submitBtn.addEventListener('click', function () {
     const mode = document.querySelector(".mode-label").textContent;
     if (mode === 'ADD') {
-        const code = document.querySelector("#college-code").value;
-        const college_name = document.querySelector("#college-name").value;
-        addCollege(code, college_name);
+        const code = document.querySelector("#course-code").value;
+        const course_name = document.querySelector("#course-name").value;
+        const college_code = document.querySelector("#college").value;
+        addCourse(code, course_name, college_code);
     }
     else if (mode === 'EDIT') {
-        const new_code = document.getElementById("college-code").value;
-        const new_name = document.getElementById("college-name").value;
-        console.log(`${old_code} ${new_code} ${new_name}`);
-        editCollege(old_code, new_code, new_name);
+        const new_code = document.getElementById("course-code").value;
+        const new_name = document.getElementById("course-name").value;
+        let new_college_code = document.getElementById("college").value;
+        console.log(`${old_code} ${new_code} ${new_name} ${new_college_code}`);
+        editCourse(old_code, new_code, new_name, new_college_code);
     }
 });
 
 // Verify College input before submit
-function verifyCollege(code, college_name) {
+function verifyCourse(code, course_name, college_code) {
     code = code.trim();
-    college_name = college_name.trim();
+    course_name = course_name.trim();
 
     if (code.length < 1) {
-        return 'College Code cannot be empty.';
+        return 'Course Code cannot be empty.';
     }
     else if (code.indexOf(" ") != -1) {
-        return 'College Code cannot contain spaces.';
+        return 'Course Code cannot contain spaces.';
     }
     else if (!(/^[A-Za-z]+$/.test(code))) {
-        return 'College Code cannot contain numbers.';
+        return 'Course Code cannot contain numbers.';
     }
 
-    if (college_name.length < 1) {
-        return 'College Name cannot be empty.';
+    if (course_name.length < 1) {
+        return 'Course Name cannot be empty.';
     }
-    else if (!(/^[A-Za-z\s]+$/.test(college_name))) {
-        return 'College Name cannot contain numbers.';
+    else if (!(/^[A-Za-z\s]+$/.test(course_name))) {
+        return 'Course Name cannot contain numbers.';
+    }
+
+    if (college_code == "") {
+        return 'Please select a college.'
     }
     return 'ok';
 }
 // Add college to the database
-function addCollege(code, college_name) {
-    const status = verifyCollege(code, college_name);
+function addCourse(code, college_name, college_code) {
+    const status = verifyCourse(code, college_name, college_code);
     if (status === 'ok') {
         document.querySelector(".error-window").classList.add("hide");
         document.getElementById('mainForm').submit();
@@ -59,8 +65,8 @@ function addCollege(code, college_name) {
     }
 }
 // Update selected college
-async function editCollege(old_code, new_code, new_name) {
-    const status = verifyCollege(new_code, new_name);
+async function editCourse(old_code, new_code, new_name, new_college_code) {
+    const status = verifyCourse(new_code, new_name, new_college_code);
     const confirm_status = await confirmWindow('edit');
     if (status === 'ok' && confirm_status == 'proceed') {
         document.querySelector(".error-window").classList.add("hide");
@@ -72,16 +78,17 @@ async function editCollege(old_code, new_code, new_name) {
                 'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
             },
             body: JSON.stringify({
-                type: 'college',
+                type: 'course',
                 old_code: old_code,
                 new_code: new_code,
-                new_name: new_name
+                new_name: new_name,
+                new_college_code: new_college_code
             }),
         }).then((_res) => {
             if (_res.ok) {
-                window.location.href = 'colleges';  // Redirect to the colleges page on success
+                window.location.href = 'courses';  // Redirect to the colleges page on success
             } else {
-                showAlert("Failed to update college.");  // Handle any error responses
+                showAlert("Failed to update course.");  // Handle any error responses
             }
         }).catch((error) => {
             console.error('Error:', error);

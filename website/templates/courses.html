@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %}Programs{% endblock %}
+{% extends "base.html" %} {% block title %}Courses{% endblock %}
 
 {% block content %}
 <div class="course-table">
@@ -8,35 +8,43 @@
       </div>
       <div class="course-code table-header">
         <button class="sort-button hidden">Code
-            <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+            <i class="fa" aria-hidden="true"></i>
         </button>
       </div>
       <div class="course-name table-header">
         <button class="sort-button hidden">Name
-            <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+            <i class="fa" aria-hidden="true"></i>
         </button>
       </div>
       <div class="course-college table-header">
         <button class="sort-button hidden">College
-            <i class="fa fa-chevron-circle-down" aria-hidden="true"></i>
+            <i class="fa" aria-hidden="true"></i>
         </button>
       </div>
     </div>
 
-    <div class="course-list">
+    <div class="myList">
         <ul>
-            <li>
-                <div class="table-row">
-                    <span class="check table-data"><input type="checkbox" id="select-all" name="select-all"></span>
-                    <span class="course-code table-data">BSCS</span>
-                    <span class="course-name table-data">Bachelor of Science in Computer Science</span>
-                    <span class="course-college table-data">CCS</span>
-                </div>
-                <div class="tableBtn-container">
-                    <button class="edit-data table-button">Edit</button>
-                    <button class="delete-data table-button"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                </div>
+          {% for item in data %}
+          <li>
+              <div class="table-row">
+                  <span class="check"><input type="checkbox" id="select-item" name="select-item"></span>
+                  <span class="course-code table-data course-data">{{ item[0] }}</span>
+                  <span class="course-name table-data course-data">{{ item[1] }}</span>
+                  <span class="course-college table-data course-drop">
+                    {% if item[2] is none %}
+                    No College
+                    {% else %}
+                    {{ item[2] }}
+                    {% endif %}
+                  </span>
+              </div>
+              <div class="tableBtn-container">
+                  <button class="edit-data table-button">Edit</button>
+                  <button class="delete-data table-button"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+              </div>
             </li>
+            {% endfor %}
         </ul>
     </div>
 
@@ -47,33 +55,35 @@
 
 {% block panelContent %}
 <header class="sideHeader"> 
-  <p><strong class="mode-label"></strong><br>Program Data</p>
+  <p><strong class="mode-label"></strong><br>Course Data</p>
 </header>
 
 <main>
     <div class="mainDetails">
       <form method="POST" id="mainForm">
-        <div class="form-group form-text" onclick="expandForm(this)">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group form-text">
           <label for = "course-code">Course Code</label>
           <input type="text" id="course-code" name="course-code" class="inputText hide" placeholder="Enter Course code..">
         </div>
-        <div class="form-group form-text" onclick="expandForm(this)">
+        <div class="form-group form-text">
           <label for = "course-name">Course Name</label>
           <input type="text" id="course-name" name="course-name" class="inputText hide" placeholder="Enter Course name..">
         </div>
         <div class="form-group dropdwn">
           <label for = "college">College</label>
           <select id="college" name="college">
-              <!--Iterate colleges-->
               <option value="" disabled selected hidden>Select a college</option>
-              <option value="value1">Volvo</option>
-              <option value="value2">Saab</option>
-              <option value="value3">Fiat</option>
-              <option value="value4">Audi</option>
+              {% for college in colleges %}
+              <option value="{{ college[0] }}">{{ college[0] }}</option>
+              {% endfor %}
           </select>
         </div>
       </form>
-
     </div>
 </main>
+{% endblock %}
+
+{% block javaScript %}
+<script type="module" src="{{ url_for('static', filename='js/course.js') }}"></script>
 {% endblock %}
