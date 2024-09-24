@@ -1,14 +1,15 @@
 import mysql.connector
 from mysql.connector import Error, errorcode
+import os
 
 # Global method to handle connection            
 def execute_query(query, data=None, fetch=False):
     try:
         connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",
-            database="school"
+            host=os.getenv('DB_HOST'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            database=os.getenv('DB_NAME')
         )
         cursor = connection.cursor()
         if data:
@@ -26,13 +27,6 @@ def execute_query(query, data=None, fetch=False):
     
     except Error as err:
         print(f"Database Error: {err}")
-        # Add custom messages, need improvement
-        # if err.errno == errorcode.ER_DUP_ENTRY:
-        #     return None, "A record with that code already exists."
-        # elif err.errno == errorcode.ER_BAD_DB_ERROR:
-        #     return None, "The database does not exist."
-        # else:
-        #     return None, f"An unexpected error occurred: {err}"
         return None, err
     
     finally:
