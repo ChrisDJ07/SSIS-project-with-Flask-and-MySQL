@@ -4,6 +4,8 @@ import os
 
 # Global method to handle connection            
 def execute_query(query, data=None, fetch=False):
+    cursor = None
+    connection = None
     try:
         connection = mysql.connector.connect(
             host=os.getenv('DB_HOST'),

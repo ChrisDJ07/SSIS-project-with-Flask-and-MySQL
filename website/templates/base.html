@@ -61,6 +61,10 @@
             <button class="main-button add-data" id="add-account">
               <i class="fa fa-plus-circle add-icon" aria-hidden="true"></i> Create New </button>
             <form class="search-form">
+                <select id="search-type" name="search-type" class="search-dropdwn">
+                    <option value="All" selected>All</option>
+                    {% block search_types %}{% endblock %}
+                </select>
                 <input type="text" class="search-field" id="search" name="search" placeholder="Search..."/>
                 <button type="button" class="search-btn">Search</button>
             </form>

@@ -137,11 +137,12 @@ document.getElementById('search').addEventListener('keydown', function (event) {
 
 // Search/filter function
 function filter() {
+    const type = document.querySelector(".search-dropdwn").selectedIndex;
     const inputField = document.querySelector(".search-field");
     let keyword = inputField.value;
     keyword = keyword.trim().toLowerCase();
 
-    const listItems = document.querySelectorAll('.myList li');
+    let listItems = document.querySelectorAll('.myList li');
 
     if (keyword == '') {
         listItems.forEach(item => {
@@ -152,7 +153,14 @@ function filter() {
     }
     else {
         listItems.forEach(item => {
-            const text = item.textContent.toLowerCase();
+            let text = '';
+            if (type == 0) {
+                text = item.textContent.toLowerCase();
+            }
+            else {
+                // Search by specific column
+                text = item.querySelectorAll('.table-data')[type - 1].textContent.toLowerCase();
+            }
             if (text.includes(keyword)) {
                 item.style.display = ''; // Show item/s
             } else {
@@ -160,6 +168,7 @@ function filter() {
             }
         });
     }
+
     // Clear checkbox
     const checkboxes = document.querySelectorAll('#select-item');
     checkboxes.forEach(checkbox => {

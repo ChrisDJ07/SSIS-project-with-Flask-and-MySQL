@@ -1,5 +1,11 @@
 {% extends "base.html" %} {% block title %}Courses{% endblock %}
 
+{% block search_types %}
+<option value="Code">Code</option>
+<option value="Name">Name</option>
+<option value="College">College</option>
+{% endblock %}
+
 {% block content %}
 <div class="course-table">
     <div class="table-headers">

@@ -89,3 +89,7 @@ body {
     width: 85%;
     height: 100%;
 }
+
+.active {
+    background-color: hwb(32 87% 20%);
+}

@@ -235,3 +235,20 @@ function countCheckedCheckboxes() {
     });
     return count;
 }
+
+// Highlight selected Tab
+const tabs = document.querySelectorAll(".navlinks li");
+switch (document.title) {
+    case "Students":
+        tabs[0].classList.add("active");
+        break;
+    case "Courses":
+        tabs[1].classList.add("active");
+        break;
+    case "Colleges":
+        tabs[2].classList.add("active");
+        break;
+
+    default:
+        break;
+}
