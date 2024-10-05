@@ -60,14 +60,14 @@ function verifyStudent(id, first_name, last_name, course_code, year, gender) {
         return 'First Name cannot be empty.';
     }
     else if (!(/^[A-Za-z\s]+$/.test(first_name))) {
-        return 'First Name cannot contain numbers.';
+        return 'First Name can\'t contain numbers and symbols.';
     }
 
     if (last_name.length < 1) {
         return 'Last Name cannot be empty.';
     }
     else if (!(/^[A-Za-z\s]+$/.test(last_name))) {
-        return 'Last Name cannot contain numbers.';
+        return 'Last Name can\'t contain numbers and symbols.';
     }
 
     if (course_code == "") {

@@ -36,14 +36,14 @@ function verifyCollege(code, college_name) {
         return 'College Code cannot contain spaces.';
     }
     else if (!(/^[A-Za-z]+$/.test(code))) {
-        return 'College Code cannot contain numbers.';
+        return 'College Code can\'t contain numbers and symbols.';
     }
 
     if (college_name.length < 1) {
         return 'College Name cannot be empty.';
     }
     else if (!(/^[A-Za-z\s]+$/.test(college_name))) {
-        return 'College Name cannot contain numbers.';
+        return 'College Name can\'t contain numbers and symbols.';
     }
     return 'ok';
 }

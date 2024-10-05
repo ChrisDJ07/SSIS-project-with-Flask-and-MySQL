@@ -39,14 +39,14 @@ function verifyCourse(code, course_name, college_code) {
         return 'Course Code cannot contain spaces.';
     }
     else if (!(/^[A-Za-z]+$/.test(code))) {
-        return 'Course Code cannot contain numbers.';
+        return 'Course Code can\'t contain numbers and symbols.';
     }
 
     if (course_name.length < 1) {
         return 'Course Name cannot be empty.';
     }
     else if (!(/^[A-Za-z\s]+$/.test(course_name))) {
-        return 'Course Name cannot contain numbers.';
+        return 'Course Name can\'t contain numbers and symbols.';
     }
 
     if (college_code == "") {

@@ -23,6 +23,11 @@ export function showAlert(message) {
     alert_box.textContent = message;
 }
 
+export function hideAlert() {
+    const alert_box = document.querySelector(".error-window");
+    alert_box.classList.add("hide");
+}
+
 // General on-screen Alert Window
 const alertElement = document.getElementById('alert');
 const overlayElement = document.getElementById('alert-overlay');
@@ -111,12 +116,14 @@ closePanelBtn.addEventListener("click", async () => {
     const status = await confirmWindow('form');
     if (status == 'discard') {
         close_sidebar();
+        hideAlert();
     }
 });
 details_cover.addEventListener("click", async () => {
     const status = await confirmWindow('form');
     if (status == 'discard') {
         close_sidebar();
+        hideAlert();
     }
 });
 

@@ -43,6 +43,7 @@
 }
 
 .search-field:focus {
+    outline: 1px solid var(--background);
     border: 2px solid var(--background-hover);
 }
 
