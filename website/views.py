@@ -12,6 +12,7 @@ def home():
         college_code = request.form.get('college')
         
         id = request.form.get('student-id')
+        id = id.replace(" ", "").upper()
         first_name = request.form.get('first-name')
         last_name = request.form.get('last-name')
         course_code = request.form.get('courses')
@@ -43,7 +44,7 @@ def courses():
         # Remove whitespace and make upppercase
         code = code.replace(" ", "").upper()
         # remove the leading and trailing whitespace
-        name = name.strip()
+        name = ' '.join(name.split())
         
         # Add the course and check the returned status
         status, error_message = Courses.addCourse(code, name, college_code)
@@ -64,7 +65,7 @@ def colleges():
         name = request.form.get('college-name')
         
         code = code.replace(" ", "").upper()
-        name = name.strip()
+        name = ' '.join(name.split())
         
         # Add the college and check the returned status
         status, error_message = Colleges.addCollege(code, name)
@@ -85,19 +86,23 @@ def update_field():
     type = data['type']
     
     if (type == 'college'):
-        status, error_message = Colleges.updateCollege(data['old_code'], data['new_code'], data['new_name'])
+        new_name = data['new_name'];
+        new_name = ' '.join(new_name.split())
+        status, error_message = Colleges.updateCollege(data['old_code'], data['new_code'].strip(), new_name)
         if error_message:
             flash(f"Operation Failed: {error_message}", category="error")
         else:
             flash("College updated successfully!", category="success")  # Success message
     elif(type == 'course'):
-        status, error_message = Courses.updateCourse(data['old_code'], data['new_code'], data['new_name'], data['new_college_code'])
+        new_name = data['new_name'];
+        new_name = ' '.join(new_name.split())
+        status, error_message = Courses.updateCourse(data['old_code'], data['new_code'].strip(), new_name, data['new_college_code'])
         if error_message:
             flash(f"Operation Failed: {error_message}", category="error")
         else:
             flash("Course updated successfully!", category="success")
     elif(type == 'student'):
-        status, error_message = Students.updateStudent(data['old_code'], data['new_id'], data['new_first_name'], data['new_last_name'], data['new_course_code'], data['new_year'], data['new_gender'])
+        status, error_message = Students.updateStudent(data['old_code'], data['new_id'].strip(), data['new_first_name'], data['new_last_name'], data['new_course_code'], data['new_year'], data['new_gender'])
         if error_message:
             flash(f"Operation Failed: {error_message}", category="error")
         else:
