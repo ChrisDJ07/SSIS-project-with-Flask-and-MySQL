@@ -1,5 +1,5 @@
 import { confirmWindow, showAlert } from './UI.js'
-import { deleteField, old_code } from './actions.js'
+import { deleteField, old_code, old_photo } from './actions.js'
 
 // Add actionListeners to delete buttons
 document.querySelectorAll('.delete-data').forEach(button => {
@@ -21,7 +21,13 @@ submitBtn.addEventListener('click', function () {
             year = 'none'; // Set to none if no selected
         }
         const gender = document.querySelector("#gender").value;
-        addStudent(id, first_name, last_name, course_code, year, gender);
+
+        if (document.getElementById('file-upload').value == '') {
+            showAlert("Please enter a Student Photo.");
+        }
+        else {
+            addStudent(id, first_name, last_name, course_code, year, gender);
+        }
     }
     else if (mode === 'EDIT') {
         const id = document.querySelector("#student-id").value;
@@ -33,7 +39,38 @@ submitBtn.addEventListener('click', function () {
         const gender = document.querySelector("#gender").value;
         console.log(gender);
 
-        editStudent(old_code, id, first_name, last_name, course_code, new_year, gender);
+        if (document.getElementById('file-upload').value == '') {
+            console.log("old photo");
+
+            editStudent(old_code, id, first_name, last_name, course_code, new_year, gender, old_photo);
+        }
+        else {
+            console.log("new photo");
+
+            // handle update-photo
+            const formData = new FormData();
+            const file = fileInput.files[0];
+            const csrfToken = document.getElementById('csrf_token').value;
+            let new_photo = '';
+
+            if (file) {
+                formData.append('file', file);
+                formData.append('csrf_token', csrfToken);
+
+                fetch('/update-photo', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        new_photo = data.new_photo;
+                        editStudent(old_code, id, first_name, last_name, course_code, new_year, gender, new_photo);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
     }
 });
 
@@ -81,12 +118,11 @@ function verifyStudent(id, first_name, last_name, course_code, year, gender) {
     if (gender == "") {
         return 'Please select a gender.'
     }
-
     return 'ok';
 }
-// Add college to the database
-function addStudent(id, first_name, last_name, course_code, year, gender) {
-    const status = verifyStudent(id, first_name, last_name, course_code, year, gender);
+// Add student to the database
+function addStudent(id, first_name, last_name, course_code, year, gender, photo_url) {
+    const status = verifyStudent(id, first_name, last_name, course_code, year, gender, photo_url);
     if (status === 'ok') {
         document.querySelector(".error-window").classList.add("hide");
         document.getElementById('mainForm').submit();
@@ -96,7 +132,7 @@ function addStudent(id, first_name, last_name, course_code, year, gender) {
     }
 }
 // Update selected college
-async function editStudent(old_code, new_id, new_first_name, new_last_name, new_course_code, new_year, new_gender) {
+async function editStudent(old_code, new_id, new_first_name, new_last_name, new_course_code, new_year, new_gender, new_photo) {
     const status = verifyStudent(new_id, new_first_name, new_last_name, new_course_code, new_year, new_gender);
     const confirm_status = await confirmWindow('edit');
     if (status === 'ok' && confirm_status == 'proceed') {
@@ -116,7 +152,8 @@ async function editStudent(old_code, new_id, new_first_name, new_last_name, new_
                 new_last_name: new_last_name,
                 new_course_code: new_course_code,
                 new_year: new_year,
-                new_gender: new_gender
+                new_gender: new_gender,
+                new_photo: new_photo
             }),
         }).then((_res) => {
             if (_res.ok) {

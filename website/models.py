@@ -25,6 +25,7 @@ def execute_query(query, data=None, fetch=False):
         
         connection.commit()
         rows_affected = cursor.rowcount
+        print(f"ROOOOWS AFFECTED: {rows_affected}")
         return rows_affected, None  # Return rows affected, no error
     
     except Error as err:
@@ -164,12 +165,12 @@ class Courses:
 
 class Students:
     @staticmethod
-    def addStudent(id, first_name, last_name, course_code, year, gender):
+    def addStudent(id, first_name, last_name, course_code, year, gender, photo_url):
         query = """
-            INSERT INTO student (student_id, first_name, last_name, course_code, year_level, gender)
-            VALUES (%s, %s, %s, %s, %s, %s);
+            INSERT INTO student (student_id, first_name, last_name, course_code, year_level, gender, student_photo_url)
+            VALUES (%s, %s, %s, %s, %s, %s, %s);
         """
-        data = (id, first_name, last_name, course_code, year, gender)
+        data = (id, first_name, last_name, course_code, year, gender, photo_url)
         print(data)
         rows_affected, error = execute_query(query, data)
         
@@ -181,13 +182,13 @@ class Students:
             return rows_affected, None  # Return rows affected and no error
         
     @staticmethod
-    def updateStudent(original_id, new_id, new_first_name, new_last_name, new_course_code, new_year, new_gender):
+    def updateStudent(original_id, new_id, new_first_name, new_last_name, new_course_code, new_year, new_gender, new_photo_url):
         query = """
             UPDATE student
-            SET student_id = %s, first_name = %s, last_name = %s, course_code = %s, year_level = %s, gender = %s
+            SET student_id = %s, first_name = %s, last_name = %s, course_code = %s, year_level = %s, gender = %s, student_photo_url=%s
             WHERE student_id = %s;
         """
-        data = (new_id, new_first_name, new_last_name, new_course_code, new_year, new_gender, original_id)
+        data = (new_id, new_first_name, new_last_name, new_course_code, new_year, new_gender, new_photo_url, original_id)
         print(data)
         rows_affected, error = execute_query(query, data)
         

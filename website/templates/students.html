@@ -14,12 +14,17 @@
       <div class="check table-header">
         <input type="checkbox" id="select-all" name="select-all">
       </div>
-      <div class="student-id table-header">
+      <div class="student_photo table-header">
+        <button class="sort-button hidden" disabled>Photo
+            <i class="fa" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="student-id table-header" id="student_id">
         <button class="sort-button hidden">Student ID
             <i class="fa" aria-hidden="true"></i>
         </button>
       </div>
-      <div class="name table-header">
+      <div class="name table-header" id="student_name">
         <button class="sort-button hidden">Name
             <i class="fa" aria-hidden="true"></i>
         </button>
@@ -47,6 +52,7 @@
             <li>
                 <div class="table-row">
                     <span class="check"><input type="checkbox" id="select-item" name="select-item"></span>
+                    <span class="student-photo" style="width:50px; height:50px"><img src={{ item[6] }} alt="Student photo" style="width:50px; height:50px"></Span>
                     <span class="student-id table-data student-data">{{ item[0] }}</span>
                     <span class="name table-data ">{{ item[1] }} {{ item[2] }}</span> <!--IM A FUCKING GENIUS!!!-->
                     <span class="student-data hide">{{ item[1] }}</span>
@@ -82,8 +88,8 @@
 
 <main>
     <div class="mainDetails">
-      <form method="POST" id="mainForm">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <form method="POST" id="mainForm" enctype='multipart/form-data'>
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
         <div class="form-group form-text">
           <label for = "student-id">Student ID</label>
           <input type="text" id="student-id" name="student-id" class="inputText hide" placeholder="Enter Student ID (20XX-XXXX)..">
@@ -127,7 +133,12 @@
                   <option value="Prefer not to say">Prefer not to say</option>
                   <option value="Others">Others</option>
               </select>
-            </div>
+          </div>
+          <div class="form-group file" style="padding-bottom: 30px; font-size: 0.9em; text-align:center;">
+            <label for="file-upload" class="custom-file-label" style="color: #005670; padding-bottom: 10px;">Upload Student Photo</label>
+            <span id="file-chosen" style="font-size: 16px; color: #005670;">No file chosen</span> <!-- Default message -->
+            <input id="file-upload" type="file" name="file" class="custom-file-input">
+          </div>       
       </form>
     </div>
 </main>
@@ -135,4 +146,13 @@
 
 {% block javaScript %}
 <script type="module" src="{{ url_for('static', filename='js/student.js') }}"></script>
+<script>
+  const fileInput = document.getElementById('file-upload');
+  const fileChosen = document.getElementById('file-chosen');
+  
+  fileInput.addEventListener('change', function() {
+      const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : 'No file chosen';
+      fileChosen.textContent = fileName;
+  });
+</script>
 {% endblock %}

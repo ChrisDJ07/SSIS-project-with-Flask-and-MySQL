@@ -9,12 +9,14 @@ function add() {
 
 // Call this function when editing
 export let old_code;
+export let old_photo;
 export function edit(event) {
     const type = document.title.toLowerCase();
     document.querySelector(".mode-label").textContent = "EDIT";
     // Get the closest <li> parent of clicked
     const row = event.target.closest("li");
     old_code = row.querySelector("span.table-data").textContent;
+    old_photo = row.querySelector("img").src;
     // Find the table-data elements within this row
     const form_field = document.querySelectorAll(".inputText");
 

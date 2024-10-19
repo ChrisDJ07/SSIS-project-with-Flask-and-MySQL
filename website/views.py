@@ -1,5 +1,8 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from .models import Colleges, Courses, Students
+from .upload import uploadFile
+from werkzeug.utils import secure_filename
+import os
 import json
 
 views = Blueprint('views', __name__)
@@ -18,12 +21,31 @@ def home():
         course_code = request.form.get('courses')
         year_level = request.form.get('year')
         gender = request.form.get('gender')
+        photo_url = ''
         
         # make sure year_level is int
         year_level = int(year_level)
         
+        # Handle student photo
+        ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg'])
+        uploadError = ''
+        if 'file' not in request.files:
+            flash(f"Operation Failed: file part missing", category="error")
+            return redirect(url_for('views.home'))
+        file = request.files['file']
+        if file.filename == '':
+            flash(f"Operation Failed: media not provided", category="error")
+        elif '.' not in file.filename and file.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS:
+            flash(f"Operation Failed: media not supported", category="error")
+        elif file:
+            photo_url = uploadPhoto(file)
+        else:
+            flash(f"Operation Failed: missing file", category="error")
+            return redirect(url_for('views.home'))
+            
+        
         # Add the course and check the returned status
-        status, error_message = Students.addStudent(id, first_name, last_name, course_code, year_level, gender)
+        status, error_message = Students.addStudent(id, first_name, last_name, course_code, year_level, gender, photo_url)
         
         if error_message:
             flash(f"Operation Failed: {error_message}", category="error")
@@ -102,7 +124,8 @@ def update_field():
         else:
             flash("Course updated successfully!", category="success")
     elif(type == 'student'):
-        status, error_message = Students.updateStudent(data['old_code'], data['new_id'].strip(), data['new_first_name'], data['new_last_name'], data['new_course_code'], data['new_year'], data['new_gender'])
+        status, error_message = Students.updateStudent(data['old_code'], data['new_id'].strip(), data['new_first_name'], data['new_last_name'], data['new_course_code'], data['new_year'], data['new_gender'], data['new_photo'])
+        print(f"new photo = {data['new_photo']}")
         if error_message:
             flash(f"Operation Failed: {error_message}", category="error")
         else:
@@ -148,3 +171,36 @@ def delete_selected():
         flash("Selected Students deleted successfully!", category="success")
         
     return jsonify({}) 
+
+def uploadPhoto(file):
+    UPLOAD_FOLDER = 'C:/Users/ASUS/Documents/- COLLEGE -/3rd Year/CCC181 - Application Development and Emerging Technologies/SSIS - Flask/Janiola_SSIS using Flask/website/static/temp-images'
+    filename = secure_filename(file.filename)
+    # save file
+    file.save(os.path.join(UPLOAD_FOLDER, filename))
+    # upload file
+    fileUrl = uploadFile(f"{UPLOAD_FOLDER}/{filename}", filename.split('.', 1)[0])
+    # remove file
+    os.remove(os.path.join(UPLOAD_FOLDER, filename))
+        
+    return fileUrl
+
+@views.route('/update-photo', methods=['POST'])
+def update_photo ():
+            # Handle student photo
+        ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg'])
+        uploadError = ''
+        if 'file' not in request.files:
+            flash(f"Operation Failed: file part missing", category="error")
+            return redirect(url_for('views.home'))
+        file = request.files['file']
+        if file.filename == '':
+            flash(f"Operation Failed: media not provided", category="error")
+        elif '.' not in file.filename and file.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS:
+            flash(f"Operation Failed: media not supported", category="error")
+        elif file:
+            photo_url = uploadPhoto(file)
+            return jsonify({'new_photo': photo_url}), 200
+        else:
+            flash(f"Operation Failed: missing file", category="error")
+            return jsonify({'error': 'missing file'}), 400
+    

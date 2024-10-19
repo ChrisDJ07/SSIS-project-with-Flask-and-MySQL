@@ -157,6 +157,12 @@ function close_sidebar() {
     dropdowns.forEach(function (dropdown) {
         dropdown.selectedIndex = 0;  // Resets to the first option (the placeholder)
     });
+
+    //Clear file submits
+    const file_select = document.getElementById('file-upload');
+    const fileChosen = document.getElementById('file-chosen');
+    file_select.value = '';
+    fileChosen.textContent = 'No file chosen';
     closeConfirmWindow();
 }
 
