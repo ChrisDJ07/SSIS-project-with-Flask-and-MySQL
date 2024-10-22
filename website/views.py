@@ -38,7 +38,7 @@ def home():
         elif '.' not in file.filename and file.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS:
             flash(f"Operation Failed: media not supported", category="error")
         elif file:
-            photo_url = uploadPhoto(file)
+            photo_url = uploadPhoto(file, id)
         else:
             flash(f"Operation Failed: missing file", category="error")
             return redirect(url_for('views.home'))
@@ -172,35 +172,42 @@ def delete_selected():
         
     return jsonify({}) 
 
-def uploadPhoto(file):
+def uploadPhoto(file, id):
     UPLOAD_FOLDER = 'C:/Users/ASUS/Documents/- COLLEGE -/3rd Year/CCC181 - Application Development and Emerging Technologies/SSIS - Flask/Janiola_SSIS using Flask/website/static/temp-images'
     filename = secure_filename(file.filename)
     # save file
     file.save(os.path.join(UPLOAD_FOLDER, filename))
     # upload file
-    fileUrl = uploadFile(f"{UPLOAD_FOLDER}/{filename}", filename.split('.', 1)[0])
+    fileUrl = uploadFile(f"{UPLOAD_FOLDER}/{filename}", id)
     # remove file
     os.remove(os.path.join(UPLOAD_FOLDER, filename))
         
     return fileUrl
 
 @views.route('/update-photo', methods=['POST'])
-def update_photo ():
-            # Handle student photo
-        ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg'])
-        uploadError = ''
-        if 'file' not in request.files:
-            flash(f"Operation Failed: file part missing", category="error")
-            return redirect(url_for('views.home'))
-        file = request.files['file']
-        if file.filename == '':
-            flash(f"Operation Failed: media not provided", category="error")
-        elif '.' not in file.filename and file.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS:
-            flash(f"Operation Failed: media not supported", category="error")
-        elif file:
-            photo_url = uploadPhoto(file)
-            return jsonify({'new_photo': photo_url}), 200
-        else:
-            flash(f"Operation Failed: missing file", category="error")
-            return jsonify({'error': 'missing file'}), 400
+def update_photo():
+    ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
     
+    # Check if form data and file are present in the request
+    if 'file' not in request.files:
+        return jsonify({'error': 'file part missing'}), 400
+    
+    file = request.files['file']
+    id = request.form.get('id')  # Expecting 'id' from form data
+    
+    if not id:
+        return jsonify({'error': 'Student ID is missing'}), 400
+
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+    
+    # Verify file extension
+    if '.' not in file.filename or file.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS:
+        return jsonify({'error': 'Invalid file type'}), 400
+    
+    # If everything is correct, process the file (upload, etc.)
+    try:
+        photo_url = uploadPhoto(file, id)  # Assuming `uploadPhoto()` handles the file saving/uploading
+        return jsonify({'new_photo': photo_url}), 200
+    except Exception as e:
+        return jsonify({'error': f'File upload failed: {str(e)}'}), 500

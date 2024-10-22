@@ -55,6 +55,7 @@ submitBtn.addEventListener('click', function () {
 
             if (file) {
                 formData.append('file', file);
+                formData.append('id', id);
                 formData.append('csrf_token', csrfToken);
 
                 fetch('/update-photo', {
@@ -64,6 +65,7 @@ submitBtn.addEventListener('click', function () {
                     .then(response => response.json())
                     .then(data => {
                         new_photo = data.new_photo;
+                        console.log(new_photo);
                         editStudent(old_code, id, first_name, last_name, course_code, new_year, gender, new_photo);
                     })
                     .catch(error => {
