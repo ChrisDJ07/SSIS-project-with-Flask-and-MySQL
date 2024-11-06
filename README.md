@@ -18,8 +18,7 @@ This project is a web-based **Simple Student Information System (SSIS)** built u
   - Delete multiple selected entries (students, courses, colleges) at once.
 
 - **File Upload:**
-  - Secure student photo uploads.
-  - Automatic photo removal after upload.
+  - Student photo uploads.
 
 ## Technologies Used
 
