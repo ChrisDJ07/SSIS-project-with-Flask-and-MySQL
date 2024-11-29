@@ -16,7 +16,9 @@ export function edit(event) {
     // Get the closest <li> parent of clicked
     const row = event.target.closest("li");
     old_code = row.querySelector("span.table-data").textContent;
-    old_photo = row.querySelector("img").src;
+    if (type == 'students') {
+        old_photo = row.querySelector("img").src;
+    }
     // Find the table-data elements within this row
     const form_field = document.querySelectorAll(".inputText");
 
