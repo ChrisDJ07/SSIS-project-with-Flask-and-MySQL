@@ -27,10 +27,16 @@ def home():
             flash(f"Operation Failed: file part missing", category="error")
             return redirect(url_for('student.home'))
         file = request.files['file']
-        if file.filename == '':
-            flash(f"Operation Failed: media not provided", category="error")
-        elif '.' not in file.filename and file.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS:
+        
+        print('FILENAMEMEMEMEMEM:')
+        print(file.filename)
+        
+        if '.' not in file.filename or file.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS:
             flash(f"Operation Failed: media not supported", category="error")
+            return redirect(url_for('student.home'))
+        elif file.filename == '':
+            photo_url = '../static/temp-images/bird-thumbnail.jpg'
+            # flash(f"Operation Failed: media not provided", category="error")
         elif file:
             photo_url = uploadPhoto(file, id)
         else:

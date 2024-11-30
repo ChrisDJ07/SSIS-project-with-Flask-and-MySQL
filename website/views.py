@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, jsonify, redirect
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from .models import Colleges, Courses, Students
 from .upload import uploadFile, uploadPhoto
 import json
@@ -81,19 +81,23 @@ def update_photo():
     
     # Check if form data and file are present in the request
     if 'file' not in request.files:
+        flash(f"Operation Failed: file part missing", category="error")
         return jsonify({'error': 'file part missing'}), 400
     
     file = request.files['file']
     id = request.form.get('id')  # Expecting 'id' from form data
     
     if not id:
+        flash(f"Operation Failed: Student ID is missing", category="error")
         return jsonify({'error': 'Student ID is missing'}), 400
 
     if file.filename == '':
+        flash(f"Operation Failed: No file selected", category="error")
         return jsonify({'error': 'No file selected'}), 400
     
     # Verify file extension
     if '.' not in file.filename or file.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS:
+        flash(f"Operation Failed: media not supported", category="error")
         return jsonify({'error': 'Invalid file type'}), 400
     
     # If everything is correct, process the file (upload, etc.)

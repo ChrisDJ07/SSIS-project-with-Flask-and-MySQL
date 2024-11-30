@@ -224,7 +224,13 @@ class Students:
 
     @staticmethod
     def getAllStudents():
-        query = "SELECT * FROM student"
+        query = """
+            SELECT student_id, first_name, last_name, s.course_code, year_level, gender, student_photo_url, co.college_name FROM student s
+            LEFT JOIN course c
+            ON s.course_code = c.course_code
+            LEFT JOIN college co
+            ON c.college_code = co.college_code
+        """
         result, error = execute_query(query, fetch=True)
         return result
     

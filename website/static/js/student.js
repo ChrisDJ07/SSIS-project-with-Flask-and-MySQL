@@ -22,12 +22,14 @@ submitBtn.addEventListener('click', function () {
         }
         const gender = document.querySelector("#gender").value;
 
-        if (document.getElementById('file-upload').value == '') {
-            showAlert("Please enter a Student Photo.");
-        }
-        else {
-            addStudent(id, first_name, last_name, course_code, year, gender);
-        }
+        // if (document.getElementById('file-upload').value == '') {
+        //     showAlert("Please enter a Student Photo.");
+        // }
+        // else {
+        //     addStudent(id, first_name, last_name, course_code, year, gender);
+        // }
+
+        addStudent(id, first_name, last_name, course_code, year, gender);
     }
     else if (mode === 'EDIT') {
         const id = document.querySelector("#student-id").value;
@@ -69,6 +71,7 @@ submitBtn.addEventListener('click', function () {
                         editStudent(old_code, id, first_name, last_name, course_code, new_year, gender, new_photo);
                     })
                     .catch(error => {
+                        window.location.reload()
                         console.error('Error:', error);
                     });
             }
@@ -120,6 +123,22 @@ function verifyStudent(id, first_name, last_name, course_code, year, gender) {
     if (gender == "") {
         return 'Please select a gender.'
     }
+
+    if (document.getElementById('file-upload').value != '') {
+        const fileInput = document.getElementById('file-upload');
+        const file = fileInput.files[0]
+        if (file) {
+            const maxSizeBytes = 5 * 1024 * 1024;
+
+            if (file.size > maxSizeBytes) {
+                fileInput.value = ''
+                return 'File exceeds 5mb'
+            }
+        }
+
+        return 'ok';
+    }
+
     return 'ok';
 }
 // Add student to the database
@@ -161,6 +180,7 @@ async function editStudent(old_code, new_id, new_first_name, new_last_name, new_
             if (_res.ok) {
                 window.location.href = '/';  // Redirect to the colleges page on success
             } else {
+                window.location.reload()
                 showAlert("Failed to update student.");  // Handle any error responses
             }
         }).catch((error) => {
