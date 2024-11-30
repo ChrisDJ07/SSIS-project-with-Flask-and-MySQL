@@ -15,20 +15,12 @@ cloudinary.config(
     secure=os.getenv('SECURE')
 )
 
+def uploadPhoto(file, id):
+    fileUrl = uploadFile(file, id)
+        
+    return fileUrl
+
 def uploadFile(filePath, filename):
-    # Upload an image
     upload_result = cloudinary.uploader.upload(filePath,
                                             public_id=filename)
     return upload_result["secure_url"]
-
-def uploadPhoto(file, id):
-    UPLOAD_FOLDER = 'C:/Users/ASUS/Documents/- COLLEGE -/3rd Year/CCC181 - Application Development and Emerging Technologies/SSIS - Flask/Janiola_SSIS using Flask/website/static/temp-images'
-    filename = secure_filename(file.filename)
-    # save file
-    file.save(os.path.join(UPLOAD_FOLDER, filename))
-    # upload file
-    fileUrl = uploadFile(f"{UPLOAD_FOLDER}/{filename}", id)
-    # remove file
-    os.remove(os.path.join(UPLOAD_FOLDER, filename))
-        
-    return fileUrl
